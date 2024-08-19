@@ -99,7 +99,7 @@ const CostCalculatorDashboard = () => {
         if (activeStages[item.name]) {
           let monthlyCost;
 
-          if (item.name === 'Data Lake' || item.name === 'Cosmos DB')  {
+          if (item.name === 'Data Lake' || item.name === 'Cosmos DB') {
             // Use the formula for summing a series (index + 1)*(index + 2)/2
             monthlyCost = (index + 1) * item.value;
             // Accumulate previous month’s cost
@@ -140,7 +140,7 @@ const CostCalculatorDashboard = () => {
           AI Backend Cost Analysis
           <a href="#disclaimer" className="text-lg font-normal align-top ml-1 text-blue-500 hover:text-blue-700 relative top-1">**</a>
         </h1>
-        <p className="text-lg text-gray-600">costs estimatation and analysis for your Azure infrastructure across different stages of the data pipeline</p>
+        <p className="text-lg text-gray-600">A tool for estimating and analyzing PoC costs across various stages of a data pipeline on Azure infrastructure</p>
       </div>
 
       <TotalCostSummary
@@ -178,7 +178,7 @@ const CostCalculatorDashboard = () => {
                       toggleStage(stage);
                     }}
                     className="mr-4"
-                  />             
+                  />
                 </AccordionTrigger>
                 <AccordionContent className="px-4 py-3 bg-white">
                   {stage === 'Event Hubs' && (
