@@ -13,6 +13,7 @@ export const AccumulativeCostChart = ({ accumulativeCostData, stages }) => {
             <CardHeader>
                 <CardTitle>Cumulative Cost</CardTitle>
                 <CardDescription>Projected costs for each service over 12 months</CardDescription>
+                <CardDescription>with yearly data retention in datalake and cosomdb</CardDescription>
             </CardHeader>
             <CardContent className="flex-grow">
                 <ResponsiveContainer width="100%" height={400}>

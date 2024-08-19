@@ -69,7 +69,7 @@ export const CosmosDB = ({ isActive, goldStorageGB, cosmosDBData, setCosmosDBDat
                         />
                     </div>
                     <div>
-                        <Label htmlFor="hours-per-day">Hours of usage per day</Label>
+                        <Label htmlFor="hours-per-day">Usage per day (Hours)</Label>
                         <Slider
                             id="hours-per-day"
                             min={1}
@@ -108,6 +108,7 @@ export const CosmosDB = ({ isActive, goldStorageGB, cosmosDBData, setCosmosDBDat
             <Card className="mt-4">
                 <CardHeader>
                     <CardTitle>Cost Estimation</CardTitle>
+                    <CardDescription>one month data retention</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="grid grid-cols-2 gap-4">

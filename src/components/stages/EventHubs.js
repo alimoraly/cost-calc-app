@@ -7,7 +7,6 @@ import { Label } from '../ui/label';
 import { Slider } from '../ui/slider';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
-import { useEventHubsCalculator } from '../../hooks/useEventHubsCalculator';
 
 export const EventHubs = ({ isActive, eventHubsData, setEventHubsData, cost }) => {
     const handleInputChange = (key, value) => {
@@ -85,7 +84,7 @@ export const EventHubs = ({ isActive, eventHubsData, setEventHubsData, cost }) =
                         />
                     </div>
                     <div>
-                        <Label htmlFor="hours-daily">Hours per day</Label>
+                        <Label htmlFor="hours-daily">Usage per day (Hours)</Label>
                         <Slider
                             id="hours-daily"
                             min={1}
@@ -107,6 +106,7 @@ export const EventHubs = ({ isActive, eventHubsData, setEventHubsData, cost }) =
             <Card className="mt-4">
                 <CardHeader>
                     <CardTitle>Cost Estimation</CardTitle>
+                    <CardDescription>Monthly</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="grid grid-cols-2 gap-4">

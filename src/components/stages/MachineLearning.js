@@ -37,7 +37,7 @@ export const MachineLearning = ({ isActive, totalMW, machineLearningData, setMac
                         <Slider
                             id="average-customer-size"
                             min={1}
-                            max={50}
+                            max={100}
                             step={1}
                             value={[machineLearningData.customersNumbers]}
                             onValueChange={(value) => handleInputChange('customersNumbers', value[0])}
@@ -140,6 +140,7 @@ export const MachineLearning = ({ isActive, totalMW, machineLearningData, setMac
             <Card className="mt-4">
                 <CardHeader>
                     <CardTitle>Cost Estimation</CardTitle>
+                    <CardDescription>Monthly</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="grid grid-cols-2 gap-4">

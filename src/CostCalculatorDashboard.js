@@ -1,12 +1,9 @@
 // src/CostCalculatorDashboard.js
 
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
-import { Tabs, TabsContent } from './components/ui/tabs';
 import { Switch } from './components/ui/switch';
-import IntegratedTabsAndSwitches from './components/ui/IntegratedTabsAndSwitches';
 import { Card, CardContent } from './components/ui/card';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './components/ui/accordion';
-import { ChevronDown, ChevronUp, Settings } from 'lucide-react';
 
 import { EventHubs } from './components/stages/EventHubs';
 import { DataLake } from './components/stages/DataLake';
@@ -27,11 +24,7 @@ import { useCostTracker } from './components/useCostTracker';
 const CostCalculatorDashboard = () => {
   const stages = ['Event Hubs', 'Data Lake', 'Databricks', 'Cosmos DB', 'Machine Learning'];
 
-  const [showConfiguration, setShowConfiguration] = useState(false);
-
-  const [activeTab, setActiveTab] = useState('event-hubs');
   const [activeStages, setActiveStages] = useState(stages.reduce((acc, stage) => ({ ...acc, [stage]: true }), {}));
-  const [previousTotalCost, setPreviousTotalCost] = useState(0);
   const [eventHubsData, setEventHubsData] = useState({
     updatesPerSecond: 33,
     bytesPerUpdate: 4,
@@ -50,7 +43,7 @@ const CostCalculatorDashboard = () => {
     dr: 10, // Running duration of each job in minutes 
     dt: 12, // Hours per day the VM is running
     ds: 1, // Number of SQL Compute Cluster instances
-    dm: 5 // SQL Compute Cluster running duration in minutes
+    dm: 120 // SQL Compute Cluster running duration in minutes
   });
 
   const [cosmosDBData, setCosmosDBData] = useState({
@@ -62,11 +55,11 @@ const CostCalculatorDashboard = () => {
 
   const [machineLearningData, setMachineLearningData] = useState({
     trainingHoursPerCustomer: 24,
-    customersNumbers: 10,
+    customersNumbers: 30,
     retrainingFrequency: 1,
     retrainingHoursPerCustomer: 10,
     retrainingPercentage: 50,
-    inferenceHoursPerDay: 24
+    inferenceHoursPerDay: 12
   });
 
 
@@ -77,7 +70,7 @@ const CostCalculatorDashboard = () => {
   const cosmosDBCalc = useCosmosDBCalculator(activeStages['Cosmos DB'], dataLakeCalc.dataLakeCost.goldStorageGB, cosmosDBData);
   const machineLearningCalc = useMachineLearningCalculator(activeStages['Machine Learning'], eventHubsData.totalMW, machineLearningData);
 
-  const { currentCost, updateCost, getChangePercentage } = useCostTracker(0);
+  const { updateCost, getChangePercentage } = useCostTracker(0);
 
   const toggleStage = (stage) => {
     setActiveStages(prev => ({ ...prev, [stage]: !prev[stage] }));
@@ -104,8 +97,18 @@ const CostCalculatorDashboard = () => {
     monthlyData.forEach((month, index) => {
       costDistribution.forEach(item => {
         if (activeStages[item.name]) {
-          const monthlyCost = item.value;
-          month[item.name] = (index > 0 ? monthlyData[index - 1][item.name] : 0) + monthlyCost;
+          let monthlyCost;
+
+          if (item.name === 'Data Lake' || item.name === 'Cosmos DB')  {
+            // Use the formula for summing a series (index + 1)*(index + 2)/2
+            monthlyCost = (index + 1) * item.value;
+            // Accumulate previous month’s cost
+            month[item.name] = (index > 0 ? monthlyData[index - 1][item.name] : 0) + monthlyCost;
+          } else {
+            // For other items, just add the fixed monthly cost
+            monthlyCost = item.value;
+            month[item.name] = (index > 0 ? monthlyData[index - 1][item.name] : 0) + monthlyCost;
+          }
         }
       });
     });
@@ -133,8 +136,11 @@ const CostCalculatorDashboard = () => {
   return (
     <div className="container mx-auto p-4 space-y-8">
       <div>
-        <h1 className="text-4xl font-bold mb-2">AI Backend Cost Analysis</h1>
-        <p className="text-lg text-gray-600">Estimate and analyze costs for your Azure infrastructure across different stages of the data pipeline.</p>
+        <h1 className="text-4xl font-bold mb-2">
+          AI Backend Cost Analysis
+          <a href="#disclaimer" className="text-lg font-normal align-top ml-1 text-blue-500 hover:text-blue-700 relative top-1">**</a>
+        </h1>
+        <p className="text-lg text-gray-600">costs estimatation and analysis for your Azure infrastructure across different stages of the data pipeline</p>
       </div>
 
       <TotalCostSummary
@@ -164,9 +170,15 @@ const CostCalculatorDashboard = () => {
                   </div>
                   <Switch
                     checked={activeStages[stage]}
-                    onCheckedChange={() => toggleStage(stage)}
+                    onClick={(e) => {
+                      // Prevent the click event from reaching the accordion
+                      e.stopPropagation(); // Use the event object passed as an argument
+                    }}
+                    onCheckedChange={(checked) => {
+                      toggleStage(stage);
+                    }}
                     className="mr-4"
-                  />                  
+                  />             
                 </AccordionTrigger>
                 <AccordionContent className="px-4 py-3 bg-white">
                   {stage === 'Event Hubs' && (
@@ -219,6 +231,9 @@ const CostCalculatorDashboard = () => {
           </Accordion>
         </CardContent>
       </Card>
+      <p id="disclaimer" className="text-sm text-gray-500 mt-4 border-t border-gray-300 pt-2 italic">
+        ** Disclaimer: The figures provided are estimates and may contain inaccuracies. Please consult with the Sales team for legally binding pricing information.
+      </p>
     </div>
   );
 };

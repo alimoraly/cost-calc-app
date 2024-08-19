@@ -1,12 +1,11 @@
 // src/components/stages/Databricks.js
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Info } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { Slider } from '../ui/slider';
-import { useDatabricksCalculator } from '../../hooks/useDatabricksCalculator';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
 
 export const Databricks = ({ isActive, databricksData, setDatabricksData, cost }) => {
@@ -34,28 +33,28 @@ export const Databricks = ({ isActive, databricksData, setDatabricksData, cost }
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div>
-                        <Label htmlFor="xb">Minutes between Delta Live Tables job triggers</Label>
+                        <Label htmlFor="xb">Processing Job Period (minutes)</Label>
                         <Slider id="xb" min={1} max={60} step={1} value={[databricksData.xb]} onValueChange={(value) => handleInputChange('xb', value[0])} />
                         <Input type="number" value={databricksData.xb} onChange={(e) => handleInputChange('xb', e.target.value)} className="mt-2" />
                     </div>
                     <div>
-                        <Label htmlFor="dr">Running duration of each job (minutes)</Label>
+                        <Label htmlFor="dr">Job Running duration (minutes)</Label>
                         <Slider id="dr" min={1} max={60} step={1} value={[databricksData.dr]} onValueChange={(value) => handleInputChange('dr', value[0])} />
                         <Input type="number" value={databricksData.dr} onChange={(e) => handleInputChange('dr', e.target.value)} className="mt-2" />
                     </div>
                     <div>
-                        <Label htmlFor="dt">Hours of usage per day</Label>
+                        <Label htmlFor="dt">Usage per day (Hours)</Label>
                         <Slider id="dt" min={1} max={24} step={1} value={[databricksData.dt]} onValueChange={(value) => handleInputChange('dt', value[0])} />
                         <Input type="number" value={databricksData.dt} onChange={(e) => handleInputChange('dt', e.target.value)} className="mt-2" />
                     </div>
                     <div>
-                        <Label htmlFor="ds">Number of SQL Compute Cluster instances</Label>
+                        <Label htmlFor="ds">SQL Compute Cluster instances Number</Label>
                         <Slider id="ds" min={1} max={10} step={1} value={[databricksData.ds]} onValueChange={(value) => handleInputChange('ds', value[0])} />
                         <Input type="number" value={databricksData.ds} onChange={(e) => handleInputChange('ds', e.target.value)} className="mt-2" />
                     </div>
                     <div>
                         <Label htmlFor="dm">SQL Compute Cluster running duration (minutes)</Label>
-                        <Slider id="dm" min={1} max={60} step={1} value={[databricksData.dm]} onValueChange={(value) => handleInputChange('dm', value[0])} />
+                        <Slider id="dm" min={0} max={720} step={5} value={[databricksData.dm]} onValueChange={(value) => handleInputChange('dm', value[0])} />
                         <Input type="number" value={databricksData.dm} onChange={(e) => handleInputChange('dm', e.target.value)} className="mt-2" />
                     </div>
                 </CardContent>
@@ -64,6 +63,7 @@ export const Databricks = ({ isActive, databricksData, setDatabricksData, cost }
             <Card className="mt-4">
                 <CardHeader>
                     <CardTitle>Cost Estimation</CardTitle>
+                    <CardDescription>Monthly</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="grid grid-cols-2 gap-4">

@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { Slider } from '../ui/slider';
-import { useDataLakeCalculator } from '../../hooks/useDataLakeCalculator';
+
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
 
 export const DataLake = ({ isActive, isEventHubsActive, dataLakeData, setDataLakeData, cost }) => {
@@ -93,6 +93,7 @@ export const DataLake = ({ isActive, isEventHubsActive, dataLakeData, setDataLak
             <Card className="mt-4">
                 <CardHeader>
                     <CardTitle>Cost Estimation</CardTitle>
+                    <CardDescription>one month data retention</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="grid grid-cols-2 gap-4">
@@ -152,8 +153,9 @@ export const DataLake = ({ isActive, isEventHubsActive, dataLakeData, setDataLak
                             <AccordionContent>
                                 <ul className="list-disc pl-5 space-y-2 text-left">
                                     <li>$26 per 100 GB per month</li>
-                                    <li>$0.0394 per 10,000 write operations. For brevity, operations cost shown for 10 Million write operations per month</li>
-                                    <li>$0.0031 per 10,000 read operations. For brevity, operations cost show for 100 Million read operations per month</li>
+                                    <li>$0.0394 per 10,000 write operations. For simplicity, operations cost shown for 10 Million write operations per month</li>
+                                    <li>$0.0031 per 10,000 read operations. For simplicity, operations cost show for 100 Million read operations per month</li>
+                                    <li></li>
                                 </ul>
                             </AccordionContent>
                         </AccordionItem>

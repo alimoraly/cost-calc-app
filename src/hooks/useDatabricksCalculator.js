@@ -14,18 +14,15 @@ export const useDatabricksCalculator = (isActive, databricksData) => {
             const { xb, dr, dt, ds, dm } = databricksData;
 
             // Delta Live Tables Cluster calculations
-            const triggersPerHour = 60 / xb;
-            const totalJobRuntimePerHour = (triggersPerHour * dr) / 60; // in hours
+            const tiggersPerDay = Math.floor(60 * dt / xb)
+            const jobRuntimeMinutesPerDay = tiggersPerDay * dr
             const vmCostPerDay = dt * 0.91;
-            const dbuCostPerDay = totalJobRuntimePerHour * dt * 2 * 0.380;
+            const dbuCostPerDay = jobRuntimeMinutesPerDay / 60 * 2 * 0.380; // 2 DBU for selected cluster HW
             const deltaLiveTablesMonthlyCost = (vmCostPerDay + dbuCostPerDay) * 30;
 
             // SQL Compute Cluster calculations
-            const runsPerHour = 60 / xb;
-            const totalRuntimePerHour = (runsPerHour * dm) / 60; // in hours
-            const sqlComputeHourlyCost = totalRuntimePerHour * ds * 3.89;
-            const sqlComputeDailyCost = sqlComputeHourlyCost * dt;
-            const sqlComputeMonthlyCost = sqlComputeDailyCost * 30;
+            const sqlComputeHourlyCostDaily = (dm / 60) * ds * 12 * 0.700;
+            const sqlComputeMonthlyCost = sqlComputeHourlyCostDaily * 30;
 
             // Total cost
             const totalMonthlyCost = deltaLiveTablesMonthlyCost + sqlComputeMonthlyCost;
@@ -40,3 +37,9 @@ export const useDatabricksCalculator = (isActive, databricksData) => {
 
     return { databricksCost };
 };
+
+// xb: 15, // Minutes between Delta Live Tables job triggers
+//     dr: 10, // Running duration of each job in minutes 
+//         dt: 12, // Hours per day the VM is running
+//             ds: 1, // Number of SQL Compute Cluster instances
+//                 dm: 5 // SQL Compute Cluster running duration in minutes
