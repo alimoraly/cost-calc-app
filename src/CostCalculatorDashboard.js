@@ -33,7 +33,7 @@ const CostCalculatorDashboard = () => {
   });
 
   const [dataLakeData, setDataLakeData] = useState({
-    silverExpansionFactor: 2,
+    silverExpansionFactor: 5,
     goldExpansionFactor: 1.5,
     manualBronzeStorageGB: 100
   });
@@ -55,7 +55,7 @@ const CostCalculatorDashboard = () => {
 
   const [machineLearningData, setMachineLearningData] = useState({
     trainingHoursPerCustomer: 24,
-    customersNumbers: 30,
+    customersNumbers: 50,
     retrainingFrequency: 1,
     retrainingHoursPerCustomer: 10,
     retrainingPercentage: 50,
@@ -116,16 +116,33 @@ const CostCalculatorDashboard = () => {
     return monthlyData;
   }, [costDistribution, activeStages]);
 
-  const totalMonthlyCost = useMemo(() => {
-    return costDistribution.reduce((total, item) => total + item.value, 0);
-  }, [costDistribution]);
+  const { totalMonthlyCost, totalAnnualCost } = useMemo(() => {
+    const accumulativeData = generateAccumulativeCostData;
 
+    if (accumulativeData.length === 0) {
+      return { totalMonthlyCost: 0, totalAnnualCost: 0 };
+    }
+
+    // Get the last month's data for the total annual cost
+    const lastMonth = accumulativeData[accumulativeData.length - 1];
+
+    // Calculate the total annual cost from the last month's accumulative data
+    const totalAnnualCost = Object.keys(lastMonth)
+      .filter(key => key !== 'month')
+      .reduce((total, key) => total + lastMonth[key], 0);
+
+    // Calculate the average monthly cost
+    const totalMonthlyCost = totalAnnualCost / 12;
+
+    return { totalMonthlyCost, totalAnnualCost };
+  }, [generateAccumulativeCostData]);
+
+  // Update the cost in the tracker
   useEffect(() => {
     console.log('Calculated total monthly cost:', totalMonthlyCost);
+    console.log('Calculated total annual cost:', totalAnnualCost);
     updateCost(totalMonthlyCost);
-  }, [totalMonthlyCost, updateCost]);
-
-  const totalAnnualCost = useMemo(() => totalMonthlyCost * 12, [totalMonthlyCost]);
+  }, [totalMonthlyCost, totalAnnualCost, updateCost]);
 
   const memoizedGetChangePercentage = useCallback(() => {
     const percentage = getChangePercentage();
@@ -146,6 +163,7 @@ const CostCalculatorDashboard = () => {
       <TotalCostSummary
         monthlyCost={totalMonthlyCost}
         annualCost={totalAnnualCost}
+        totalMW={eventHubsData.totalMW}
         getChangePercentage={memoizedGetChangePercentage}
       />
 

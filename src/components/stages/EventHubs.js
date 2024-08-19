@@ -33,6 +33,23 @@ export const EventHubs = ({ isActive, eventHubsData, setEventHubsData, cost }) =
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div>
+                        <Label htmlFor="total-mw">Total MW managed</Label>
+                        <Slider
+                            id="total-mw"
+                            min={10}
+                            max={1000}
+                            step={10}
+                            value={[eventHubsData.totalMW]}
+                            onValueChange={(value) => handleInputChange('totalMW', value[0])}
+                        />
+                        <Input
+                            type="number"
+                            value={eventHubsData.totalMW}
+                            onChange={(e) => handleInputChange('totalMW', e.target.value)}
+                            className="mt-2"
+                        />
+                    </div>
+                    <div>
                         <Label htmlFor="updates-per-second">Updates per second per MW</Label>
                         <Slider
                             id="updates-per-second"
@@ -63,23 +80,6 @@ export const EventHubs = ({ isActive, eventHubsData, setEventHubsData, cost }) =
                             type="number"
                             value={eventHubsData.bytesPerUpdate}
                             onChange={(e) => handleInputChange('bytesPerUpdate', e.target.value)}
-                            className="mt-2"
-                        />
-                    </div>
-                    <div>
-                        <Label htmlFor="total-mw">Total MW managed</Label>
-                        <Slider
-                            id="total-mw"
-                            min={10}
-                            max={1000}
-                            step={10}
-                            value={[eventHubsData.totalMW]}
-                            onValueChange={(value) => handleInputChange('totalMW', value[0])}
-                        />
-                        <Input
-                            type="number"
-                            value={eventHubsData.totalMW}
-                            onChange={(e) => handleInputChange('totalMW', e.target.value)}
                             className="mt-2"
                         />
                     </div>

@@ -12,6 +12,7 @@ export const CostDistributionPieChart = ({ costDistribution }) => {
             <CardHeader>
                 <CardTitle>Cost Distribution</CardTitle>
                 <CardDescription>Breakdown of monthly costs across all services</CardDescription>
+                <CardDescription>Monthly data retention</CardDescription>
             </CardHeader>
             <CardContent className="flex-grow">
                 <ResponsiveContainer width="100%" height={350}>

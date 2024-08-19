@@ -111,7 +111,7 @@ export const CosmosDB = ({ isActive, goldStorageGB, cosmosDBData, setCosmosDBDat
                     <CardDescription>one month data retention</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-3 gap-4">
                         <div>
                             <Label>Storage Size</Label>
                             <p className="text-2xl font-bold">{cost.storageSize.toFixed(2)} GB</p>
@@ -124,7 +124,7 @@ export const CosmosDB = ({ isActive, goldStorageGB, cosmosDBData, setCosmosDBDat
                             <Label>Transaction Cost</Label>
                             <p className="text-2xl font-bold">${cost.transactionMonthCost.toFixed(2)}</p>
                         </div>
-                        <div className="col-span-2">
+                        <div className="col-span-3">
                             <Label>Total Monthly Cost</Label>
                             <p className="text-3xl font-bold text-blue-600">${cost.totalMonthlyCost.toFixed(2)}</p>
                         </div>

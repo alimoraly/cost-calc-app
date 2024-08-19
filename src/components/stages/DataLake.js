@@ -96,7 +96,7 @@ export const DataLake = ({ isActive, isEventHubsActive, dataLakeData, setDataLak
                     <CardDescription>one month data retention</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-3 gap-4">
                         <div>
                             <Label>Bronze Storage</Label>
                             <p className="text-2xl font-bold">{cost.bronzeStorageGB.toFixed(2)} GB</p>
@@ -123,7 +123,7 @@ export const DataLake = ({ isActive, isEventHubsActive, dataLakeData, setDataLak
                                 ${(cost.writeOperationsCost + cost.readOperationsCost).toFixed(2)}
                             </p>
                         </div>
-                        <div className="col-span-2">
+                        <div className="col-span-3">
                             <Label>Total Monthly Cost</Label>
                             <p className="text-3xl font-bold text-blue-600">${cost.totalMonthlyCost.toFixed(2)}</p>
                         </div>

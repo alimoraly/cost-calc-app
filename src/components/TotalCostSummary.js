@@ -1,10 +1,10 @@
 // src/components/TotalCostSummary.js
 
 import React, { useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card';
 import { ArrowUpRight, ArrowDownRight } from 'lucide-react';
 
-const TotalCostSummary = React.memo(({ monthlyCost, annualCost, getChangePercentage }) => {
+const TotalCostSummary = React.memo(({ totalMW, monthlyCost, annualCost, getChangePercentage }) => {
     const { changePercentage, showChange } = useMemo(() => {
         const percentage = getChangePercentage();
         console.log('Change percentage calculated:', percentage);
@@ -29,8 +29,9 @@ const TotalCostSummary = React.memo(({ monthlyCost, annualCost, getChangePercent
         <Card className="w-full mb-8 shadow-lg">
             <CardHeader>
                 <CardTitle className="text-2xl font-bold">PoC Cost Summary</CardTitle>
+                <CardDescription>Annual data retention</CardDescription>
             </CardHeader>
-            <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="flex flex-col">
                     <span className="text-lg font-semibold text-gray-600">Monthly Total</span>
                     <span className="text-4xl font-bold">{formatCurrency(monthlyCost)}</span>
@@ -51,6 +52,10 @@ const TotalCostSummary = React.memo(({ monthlyCost, annualCost, getChangePercent
                 <div className="flex flex-col">
                     <span className="text-lg font-semibold text-gray-600">Annual Total</span>
                     <span className="text-4xl font-bold">{formatCurrency(annualCost)}</span>
+                </div>
+                <div className="flex flex-col">
+                    <span className="text-lg font-semibold text-gray-600">Managed Power</span>
+                    <span className="text-4xl font-bold">{totalMW} MW</span>
                 </div>
             </CardContent>
         </Card>
